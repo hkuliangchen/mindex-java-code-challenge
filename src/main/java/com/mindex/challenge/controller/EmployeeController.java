@@ -1,11 +1,15 @@
 package com.mindex.challenge.controller;
 
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class EmployeeController {
@@ -34,5 +38,26 @@ public class EmployeeController {
 
         employee.setEmployeeId(id);
         return employeeService.update(employee);
+    }
+
+    @GetMapping("/employee/{id}/reportingStructure")
+    public ReportingStructure getReportingStructure(@PathVariable String id) {
+        LOG.debug("Received ReportingStructure GET request for employee id [{}]", id);
+
+        return employeeService.getReportingStructure(id);
+    }
+
+    @GetMapping("/employee/{id}/compensation")
+    public List<Compensation> getCompensation(@PathVariable String id) {
+        LOG.debug("Received Compensation GET request for employee id [{}]", id);
+
+        return employeeService.getCompensation(id);
+    }
+
+    @PostMapping("/compensation")
+    public Compensation createCompensation(@RequestBody Compensation compensation) {
+        LOG.debug("Received compensation create request for [{}]", compensation.getEmployee());
+
+        return employeeService.createCompensation(compensation);
     }
 }
